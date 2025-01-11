@@ -1,0 +1,1 @@
+<img src="{{ asset('img/Logo-RTM-Hitam.png') }}" alt="Logo RTM" {{ $attributes }}>
