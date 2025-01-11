@@ -88,7 +88,7 @@ public function simpansiswaips(Request $request)
         'id_siswa' => (string) Str::uuid(),
         'nama' => $request->nama,
         'jenis_kelamin' => $request->jenis_kelamin,
-        'jurusan' => 'IPS', // Pastikan jurusan diatur sebagai IPS
+        'jurusan' => 'IPS',
         'alamat' => $request->alamat,
         'asal_sekolah' => $request->asal_sekolah,
     ]);
