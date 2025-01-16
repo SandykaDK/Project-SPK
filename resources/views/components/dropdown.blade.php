@@ -29,7 +29,7 @@ $width = match ($width) {
             style="display: none;"
             @click="open = false">
         <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
-            {{ $content }}
+            {{ $slot }}
         </div>
     </div>
 </div>

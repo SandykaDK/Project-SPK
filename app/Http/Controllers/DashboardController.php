@@ -2,178 +2,191 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ipa;
-use App\Models\Ips;
-use App\Models\Siswa;
-use Illuminate\Support\Str;
+use App\Models\Ipk;
+use App\Models\Jurusan;
+use Nette\Utils\Random;
+use App\Models\Kriteria;
+use App\Models\Prestasi;
+use App\Models\Mahasiswa;
+use App\Models\Alternatif;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
-    public function tampilsiswa()
+    public function tampilDashboard()
     {
-        $siswa = Siswa::all();
-        return view('dashboard', compact('siswa'));
+        $mahasiswa = Mahasiswa::all();
+        $kriteria = Kriteria::all();
+        $jurusan = Jurusan::all();
+        $prestasi = Prestasi::all();
+        $ipk = Ipk::all();
+
+        $totalMahasiswa = $mahasiswa->count();
+        $countByJurusan = $mahasiswa->groupBy('kode_jurusan')->map->count();
+        $jurusanNames = $jurusan->pluck('nama_jurusan', 'kode_jurusan');
+
+        return view('dashboard', compact('mahasiswa', 'kriteria', 'jurusan', 'prestasi', 'ipk', 'totalMahasiswa', 'countByJurusan', 'jurusanNames'));
     }
 
-    public function tambahsiswaipa()
+    public function tampilJurusanS1SI()
     {
-        return view('tambahsiswaipa');
+        $mahasiswa = Mahasiswa::where('kode_jurusan', 'S1SI')
+        ->with('ipk', 'prestasi', 'jurusan', 'periode')
+        ->get();
+
+        return view('jurusans1si', compact('mahasiswa'));
     }
 
-    public function tambahsiswaips()
+    public function tampilJurusanS1TK()
     {
-        return view('tambahsiswaips');
+        $mahasiswa = Mahasiswa::where('kode_jurusan', 'S1TK')
+        ->with('ipk', 'prestasi', 'jurusan', 'periode')
+        ->get();
+
+        return view('jurusans1tk', compact('mahasiswa'));
     }
 
-    public function simpansiswaipa(Request $request)
+    public function tampilJurusanD3SI()
     {
+        $mahasiswa = Mahasiswa::where('kode_jurusan', 'D3SI')
+        ->with('ipk', 'prestasi', 'jurusan', 'periode')
+        ->get();
 
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'jenis_kelamin' => 'required|string|max:1',
-        'jurusan' => 'required|string|max:255',
-        'alamat' => 'required|string|max:255',
-        'asal_sekolah' => 'required|string|max:255',
-        'b_inggris' => 'required|int',
-        'matematika' => 'required|int',
-        'fisika' => 'required|int',
-        'kimia' => 'required|int',
-        'biologi' => 'required|int',
-    ]);
-
-    $siswa = Siswa::create([
-        'id_siswa' => (string) Str::uuid(),
-        'nama' => $request->nama,
-        'jenis_kelamin' => $request->jenis_kelamin,
-        'jurusan' => $request->jurusan,
-        'alamat' => $request->alamat,
-        'asal_sekolah' => $request->asal_sekolah,
-    ]);
-
-    Log::info('Siswa created:', $siswa->toArray());
-
-    Ipa::create([
-        'id_siswa' => $siswa->id_siswa,
-        'b_inggris' => $request->b_inggris,
-        'matematika' => $request->matematika,
-        'fisika' => $request->fisika,
-        'kimia' => $request->kimia,
-        'biologi' => $request->biologi,
-    ]);
-
-    return redirect()->route('dashboard')->with('success', 'Siswa IPA berhasil ditambahkan.');
-}
-
-public function simpansiswaips(Request $request)
-{
-
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'jenis_kelamin' => 'required|string|max:1',
-        'jurusan' => 'required|string|max:255',
-        'alamat' => 'required|string|max:255',
-        'asal_sekolah' => 'required|string|max:255',
-        'b_inggris' => 'required|int',
-        'ekonomi' => 'required|int',
-        'sosiologi' => 'required|int',
-        'geografi' => 'required|int',
-        'sejarah' => 'required|int',
-    ]);
-
-    $siswa = Siswa::create([
-        'id_siswa' => (string) Str::uuid(),
-        'nama' => $request->nama,
-        'jenis_kelamin' => $request->jenis_kelamin,
-        'jurusan' => 'IPS',
-        'alamat' => $request->alamat,
-        'asal_sekolah' => $request->asal_sekolah,
-    ]);
-
-    Log::info('Siswa created:', $siswa->toArray());
-
-    Ips::create([
-        'id_siswa' => $siswa->id_siswa,
-        'b_inggris' => $request->b_inggris,
-        'ekonomi' => $request->ekonomi,
-        'sosiologi' => $request->sosiologi,
-        'geografi' => $request->geografi,
-        'sejarah' => $request->sejarah,
-    ]);
-
-        return redirect()->route('dashboard')->with('success', 'Siswa IPS berhasil ditambahkan.');
+        return view('jurusand3si', compact('mahasiswa'));
     }
 
-    public function editsiswa($id_siswa)
+    public function tampilKriteria()
     {
-        $siswa = Siswa::findOrFail($id_siswa);
-        if ($siswa->jurusan == 'IPA') {
-            $nilai = Ipa::where('id_siswa', $id_siswa)->first();
-            return view('editsiswaipa', compact('siswa', 'nilai'));
-        } else if ($siswa->jurusan == 'IPS') {
-            $nilai = Ips::where('id_siswa', $id_siswa)->first();
-            return view('editsiswaips', compact('siswa', 'nilai'));
-        }
+        $kriteria = Kriteria::all();
+        return view('kriteria', compact('kriteria'));
     }
 
-    public function updatesiswa(Request $request, $id_siswa)
+    public function tambahMahasiswa()
+    {
+        $jurusan = Jurusan::all();
+        return view('tambahmahasiswa', compact('jurusan'));
+    }
+
+    public function simpanMahasiswa(Request $request)
     {
         $request->validate([
+            'nim' => 'required|string|max:11',
             'nama' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|max:1',
+            'kode_jurusan' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
-            'asal_sekolah' => 'required|string|max:255',
-            'b_inggris' => 'required|int',
-            'matematika' => 'required_if:jurusan,IPA|int',
-            'fisika' => 'required_if:jurusan,IPA|int',
-            'kimia' => 'required_if:jurusan,IPA|int',
-            'biologi' => 'required_if:jurusan,IPA|int',
-            'ekonomi' => 'required_if:jurusan,IPS|int',
-            'sosiologi' => 'required_if:jurusan,IPS|int',
-            'geografi' => 'required_if:jurusan,IPS|int',
-            'sejarah' => 'required_if:jurusan,IPS|int',
         ]);
 
-        $siswa = Siswa::findOrFail($id_siswa);
-        $siswa->update($request->only(['nama', 'jenis_kelamin', 'alamat', 'asal_sekolah']));
+        $mahasiswa = Mahasiswa::create([
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'kode_jurusan' => $request->kode_jurusan,
+            'alamat' => $request->alamat,
+        ]);
 
-        if ($siswa->jurusan == 'IPA') {
-            Ipa::updateOrCreate(
-                ['id_siswa' => $siswa->id_siswa],
-                [
-                    'b_inggris' => $request->b_inggris,
-                    'matematika' => $request->matematika,
-                    'fisika' => $request->fisika,
-                    'kimia' => $request->kimia,
-                    'biologi' => $request->biologi,
-                ]
-            );
-        } else if ($siswa->jurusan == 'IPS') {
-            Ips::updateOrCreate(
-                ['id_siswa' => $siswa->id_siswa],
-                [
-                    'b_inggris' => $request->b_inggris,
-                    'ekonomi' => $request->ekonomi,
-                    'sosiologi' => $request->sosiologi,
-                    'geografi' => $request->geografi,
-                    'sejarah' => $request->sejarah,
-                ]
-            );
+        $alternatif = Alternatif::create([
+            'id_alternatif' => Random::generate(11),
+            'k1' => 0,
+            'k2' => 0,
+            'k3' => 0,
+            'k4' => 0,
+            'k5' => 0,
+            'nim' => $request->nim,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Data mahasiswa berhasil disimpan.');
+    }
+
+    public function editMahasiswa($id)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        return view('editmahasiswa', compact('mahasiswa'));
+    }
+
+    public function updateMahasiswa(Request $request, $id)
+    {
+        $request->validate([
+            'nim' => 'required|string|max:11',
+            'nama' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string|max:1',
+            'kode_jurusan' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+        ]);
+
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        $mahasiswa->update([
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'kode_jurusan' => $request->kode_jurusan,
+            'alamat' => $request->alamat,
+        ]);
+
+        switch ($mahasiswa->kode_jurusan) {
+            case 'S1SI':
+                return redirect()->route('jurusans1si')->with('success', 'Data mahasiswa berhasil diubah.');
+            case 'S1TK':
+                return redirect()->route('jurusans1tk')->with('success', 'Data mahasiswa berhasil diubah.');
+            case 'D3SI':
+                return redirect()->route('jurusand3si')->with('success', 'Data mahasiswa berhasil diubah.');
+            default:
+                return redirect()->route('dashboard')->with('success', 'Data mahasiswa berhasil diubah.');
         }
-
-        return redirect()->route('dashboard')->with('success', 'Siswa berhasil diperbarui.');
     }
 
-    public function tampilipa()
+    public function editAlternatif($id)
     {
-        $siswa = Siswa::with('ipa')->get();
-        return view('ipa', compact('siswa'));
+        $alternatif = Alternatif::findOrFail($id);
+
+        return view('editalternatif', compact('alternatif'));
     }
 
-    public function tampilips()
+    public function updateAlternatif(Request $request, $id)
     {
-        $siswa = Siswa::with('ips')->get();
-        return view('ips', compact('siswa'));
+        $request->validate([
+            'k1' => 'required|numeric',
+            'k2' => 'required|numeric',
+            'k3' => 'required|numeric',
+            'k4' => 'required|numeric',
+            'k5' => 'required|numeric',
+        ]);
+
+        $alternatif = Alternatif::findOrFail($id);
+
+        $alternatif->update([
+            'k1' => $request->k1,
+            'k2' => $request->k2,
+            'k3' => $request->k3,
+            'k4' => $request->k4,
+            'k5' => $request->k5,
+        ]);
+        return redirect()->route('dashboard')->with('success', 'Data alternatif berhasil diubah.');
+    }
+
+    public function editKriteria($id)
+    {
+        $kriteria = Kriteria::findOrFail($id);
+        return view('editkriteria', compact('kriteria'));
+    }
+
+    public function updateKriteria(Request $request, $id)
+    {
+        $request->validate([
+            'nama_kriteria' => 'required|string|max:255',
+            'bobot_kriteria' => 'required|numeric',
+            'tipe_kriteria' => 'required|string|in:benefit,cost',
+        ]);
+
+        $kriteria = Kriteria::findOrFail($id);
+
+        $kriteria->update([
+            'nama_kriteria' => $request->nama_kriteria,
+            'bobot_kriteria' => $request->bobot_kriteria,
+            'tipe_kriteria' => $request->tipe_kriteria,
+        ]);
+
+        return redirect()->route('kriteria')->with('success', 'Data kriteria berhasil diubah.');
     }
 }

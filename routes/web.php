@@ -7,40 +7,45 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/tambahsiswaipa', [DashboardController::class, 'tambahsiswaipa'])
+Route::get('/dashboard', [DashboardController::class, 'tampilDashboard'])
     ->middleware(['auth', 'verified'])
-    ->name('tambahsiswaipa');
+    ->name('dashboard');
 
-Route::get('/tambahsiswaips', [DashboardController::class, 'tambahsiswaips'])
-    ->middleware(['auth', 'verified'])
-    ->name('tambahsiswaips');
+Route::get('/tambahmahasiswa', [DashboardController::class, 'tambahMahasiswa'])
+    ->name('tambahmahasiswa');
 
-Route::post('/siswa/simpanipa', [DashboardController::class, 'simpansiswaipa'])
-    ->name('siswa.simpanipa');
+Route::get('/editalternatif/{id}', [DashboardController::class, 'editAlternatif'])
+    ->name('editalternatif');
 
-Route::post('/siswa/simpanips', [DashboardController::class, 'simpansiswaips'])
-    ->name('siswa.simpanips');
+Route::put('/updatealternatif/{id}', [DashboardController::class, 'updateAlternatif'])
+    ->name('updatealternatif');
 
-Route::get('/editsiswa/{id_siswa}', [DashboardController::class, 'editsiswa'])
-    ->middleware(['auth', 'verified'])
-    ->name('siswa.edit');
+Route::post('/simpanmahasiswa', [DashboardController::class, 'simpanMahasiswa'])
+    ->name('simpanmahasiswa');
 
-Route::post('/updatesiswa/{id_siswa}', [DashboardController::class, 'updatesiswaipa'])
-    ->middleware(['auth', 'verified'])
-    ->name('siswa.update');
+Route::get('/editmahasiswa/{id}', [DashboardController::class, 'editMahasiswa'])
+    ->name('editmahasiswa');
 
+Route::put('/updatemahasiswa/{id}', [DashboardController::class, 'updateMahasiswa'])
+    ->name('updatemahasiswa');
 
-Route::get('/ipa', [DashboardController::class, 'tampilipa'])
-    ->middleware(['auth', 'verified'])
-    ->name('ipa');
+Route::get('/jurusans1tk', [DashboardController::class, 'tampilJurusanS1TK'])
+    ->name('jurusans1tk');
 
-Route::get('/ips', [DashboardController::class, 'tampilips'])
-    ->middleware(['auth', 'verified'])
-    ->name('ips');
+Route::get('/jurusans1si', [DashboardController::class, 'tampilJurusanS1SI'])
+    ->name('jurusans1si');
+
+Route::get('/jurusand3si', [DashboardController::class, 'tampilJurusanD3SI'])
+    ->name('jurusand3si');
+
+Route::get('/kriteria', [DashboardController::class, 'tampilKriteria'])
+    ->name('kriteria');
+
+Route::get('/editkriteria/{id}', [DashboardController::class, 'editKriteria'])
+    ->name('editkriteria');
+
+Route::put('/editkriteria/{id}', [DashboardController::class, 'updateKriteria'])
+    ->name('editkriteria');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

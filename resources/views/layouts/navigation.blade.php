@@ -6,27 +6,33 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('ipa')" :active="request()->routeIs('ipa')">
-                        {{ __('IPA') }}
+                    <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                        {{ __('Profile') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('ips')" :active="request()->routeIs('ips')">
-                        {{ __('IPS') }}
+                    <x-nav-link :href="route('jurusans1si')" :active="request()->routeIs('jurusans1si')">
+                        {{ __('S1 Sistem Informasi') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('jurusans1tk')" :active="request()->routeIs('jurusans1tk')">
+                        {{ __('S1 Teknik Komputer') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
+                        {{ __('D3 Sistem Informasi') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('kriteria')" :active="request()->routeIs('kriteriai')">
+                        {{ __('Kriteria') }}
                     </x-nav-link>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -61,11 +67,11 @@
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-mr-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{ 'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        <path :class="{ 'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -73,18 +79,22 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': ! open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('ipa')" :active="request()->routeIs('ipa')">
-                {{ __('IPA') }}
+            <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                {{ __('Profile') }}
             </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('ips')" :active="request()->routeIs('ips')">
-                {{ __('IPS') }}
+            <x-responsive-nav-link :href="route('jurusans1si')" :active="request()->routeIs('jurusans1si')">
+                {{ __('S1 Sistem Informasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('jurusans1tk')" :active="request()->routeIs('jurusans1tk')">
+                {{ __('S1 Teknik Komputer') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
+                {{ __('D3 Sistem Informasi') }}
             </x-responsive-nav-link>
         </div>
 
@@ -96,6 +106,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <!-- Profile -->
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
