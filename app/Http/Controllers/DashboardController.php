@@ -61,6 +61,11 @@ class DashboardController extends Controller
         return view('kriteria', compact('kriteria'));
     }
 
+    public function tampilPerhitungan()
+    {
+        return view('perhitungan', compact('perhitungan'));
+    }
+
     public function tambahMahasiswa()
     {
         $jurusan = Jurusan::all();
@@ -136,6 +141,14 @@ class DashboardController extends Controller
         }
     }
 
+    public function hapusMahasiswa($id)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        $mahasiswa->delete();
+
+        return redirect()->route('jurusans1si')->with('success', 'Data mahasiswa berhasil dihapus.');
+    }
+
     public function editAlternatif($id)
     {
         $alternatif = Alternatif::findOrFail($id);
@@ -165,27 +178,34 @@ class DashboardController extends Controller
         return redirect()->route('dashboard')->with('success', 'Data alternatif berhasil diubah.');
     }
 
-    public function editKriteria($id)
+    public function editKriteria()
     {
-        $kriteria = Kriteria::findOrFail($id);
+        $kriteria = Kriteria::all();
         return view('editkriteria', compact('kriteria'));
     }
 
-    public function updateKriteria(Request $request, $id)
+    public function updateKriteria(Request $request)
     {
         $request->validate([
-            'nama_kriteria' => 'required|string|max:255',
-            'bobot_kriteria' => 'required|numeric',
-            'tipe_kriteria' => 'required|string|in:benefit,cost',
+            'nama_kriteria.*' => 'required|string|max:255',
+            'bobot_kriteria.*' => 'required|numeric',
+            'tipe_kriteria.*' => 'required|string|in:Benefit,Cost',
         ]);
 
-        $kriteria = Kriteria::findOrFail($id);
+        $totalBobot = array_sum($request->bobot_kriteria);
 
-        $kriteria->update([
-            'nama_kriteria' => $request->nama_kriteria,
-            'bobot_kriteria' => $request->bobot_kriteria,
-            'tipe_kriteria' => $request->tipe_kriteria,
-        ]);
+        if ($totalBobot != 1) {
+            return redirect()->back()->withErrors(['bobot_kriteria' => 'Total bobot kriteria harus sama dengan 1.']);
+        }
+
+        foreach ($request->nama_kriteria as $id => $nama_kriteria) {
+            $kriteria = Kriteria::findOrFail($id);
+            $kriteria->update([
+                'nama_kriteria' => $nama_kriteria,
+                'bobot_kriteria' => $request->bobot_kriteria[$id],
+                'tipe_kriteria' => $request->tipe_kriteria[$id],
+            ]);
+        }
 
         return redirect()->route('kriteria')->with('success', 'Data kriteria berhasil diubah.');
     }

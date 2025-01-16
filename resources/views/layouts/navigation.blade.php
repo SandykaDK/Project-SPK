@@ -27,8 +27,11 @@
                     <x-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
                         {{ __('D3 Sistem Informasi') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('kriteria')" :active="request()->routeIs('kriteriai')">
+                    <x-nav-link :href="route('kriteria')" :active="request()->routeIs('kriteria')">
                         {{ __('Kriteria') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('perhitungan')" :active="request()->routeIs('perhitungan')">
+                        {{ __('Perhitungan') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -95,6 +98,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
                 {{ __('D3 Sistem Informasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('perhitungan')" :active="request()->routeIs('perhitungan')">
+                {{ __('Perhitungan') }}
             </x-responsive-nav-link>
         </div>
 

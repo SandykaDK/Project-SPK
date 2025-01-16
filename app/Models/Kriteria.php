@@ -10,16 +10,16 @@ class Kriteria extends Model
     use HasFactory;
 
     protected $table = 'kriteria';
-    protected $primaryKey = 'id_kriteria';
+    protected $primaryKey = 'id'; // Pastikan ini sesuai dengan kolom primary key di tabel
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
-       'id_kriteria',
-       'nama_kriteria',
-       'bobot_kriteria',
-       'jenis_kriteria',
+        'id_kriteria',
+        'nama_kriteria',
+        'bobot_kriteria',
+        'tipe_kriteria',
     ];
 
     public function mahasiswa()
