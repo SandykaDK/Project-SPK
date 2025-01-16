@@ -44,8 +44,8 @@ Route::get('/kriteria', [DashboardController::class, 'tampilKriteria'])
 Route::get('/editkriteria/{id}', [DashboardController::class, 'editKriteria'])
     ->name('editkriteria');
 
-Route::put('/editkriteria/{id}', [DashboardController::class, 'updateKriteria'])
-    ->name('editkriteria');
+Route::put('/updatekriteria/{id}', [DashboardController::class, 'updateKriteria'])
+    ->name('updatekriteria');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
