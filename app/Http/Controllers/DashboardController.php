@@ -63,7 +63,14 @@ class DashboardController extends Controller
 
     public function tampilPerhitungan()
     {
-        return view('perhitungan', compact('perhitungan'));
+        $mahasiswa = Mahasiswa::with('jurusan')->get();
+        return view('perhitungan', compact('mahasiswa'));
+    }
+
+    public function detailPerhitungan($id)
+    {
+        $mahasiswa = Mahasiswa::with('jurusan', 'ipk', 'prestasi', 'alternatif')->findOrFail($id);
+        return view('detailperhitungan', compact('mahasiswa'));
     }
 
     public function tambahMahasiswa()

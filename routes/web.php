@@ -53,6 +53,9 @@ Route::put('/updatekriteria', [DashboardController::class, 'updateKriteria'])
 Route::get('/perhitungan', [DashboardController::class, 'tampilPerhitungan'])
     ->name('perhitungan');
 
+Route::get('/detailperhitungan/{id}', [DashboardController::class, 'detailPerhitungan'])
+    ->name('detailperhitungan');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

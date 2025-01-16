@@ -34,9 +34,13 @@
                                             <td class="py-2 px-4 border-b border-gray-300"></td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $index + 1 }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">
-                                                <a href="{{ route('editmahasiswa', ['id' => $m->id]) }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">Detail</a>
-                                                <a href="{{ route('tambahmahasiswa') }}" class="btn-nilai bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mb-4">Nilai</a>
-                                                <a href="{{ route('tambahmahasiswa') }}" class="btn-hapus bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4">Hapus</a>
+                                                <a href="{{ route('editmahasiswa', ['id' => $m->id]) }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Detail</a>
+                                                <a href="{{ route('editalternatif', ['id' => $m->id]) }}" class="btn-nilai bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Nilai</a>
+                                                <form action="{{ route('hapusmahasiswa', ['id' => $m->id]) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-hapus bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Hapus</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

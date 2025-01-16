@@ -43,15 +43,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">1</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">22410100059</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">Sandyka</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">S1 Sistem Informasi</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">0.9</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">1</td>
-                                    </tr>
-                                    <!-- Add more rows as needed -->
+                                    @foreach ($mahasiswa as $index => $m)
+                                        <tr class="hover:bg-gray-100 text-center">
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $index + 1 }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->nim }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->nama }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->jurusan->nama_jurusan ?? 'Tidak ada jurusan' }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300"></td>
+                                            <td class="py-2 px-4 border-b border-gray-300"></td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

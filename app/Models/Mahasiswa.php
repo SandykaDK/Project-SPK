@@ -53,4 +53,9 @@ class Mahasiswa extends Model
     {
         return $this->hasOne(Alternatif::class, 'nim', 'nim');
     }
+
+    public function perhitungan()
+    {
+        return $this->hasMany(Perhitungan::class, 'nim', 'nim');
+    }
 }
