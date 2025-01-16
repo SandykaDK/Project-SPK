@@ -57,7 +57,7 @@
                         </div>
 
                         <div>
-                            <label for="k5">IPK:</label>
+                            <label for="k5">IPK :</label>
                             <select id="k5" name="k5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                                 <option value="1" {{ $alternatif->k5 == 1 ? 'selected' : '' }}>1</option>
                                 <option value="2" {{ $alternatif->k5 == 2 ? 'selected' : '' }}>2</option>
