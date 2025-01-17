@@ -33,16 +33,17 @@
 
                                 <div>
                                     <label for="bobot_kriteria_{{ $k->id }}">Bobot Kriteria:</label>
-                                    <input type="number" id="bobot_kriteria_{{ $k->id }}" name="bobot_kriteria[{{ $k->id }}]" value="{{ $k->bobot_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" step="0.01" required>
+                                    <input type="number" id="bobot_kriteria_{{ $k->id }}" name="bobot_kriteria[{{ $k->id }}]" value="{{ $k->bobot_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg mb-5" step="0.01" required>
                                 </div>
 
-                                <div>
+                                {{-- <div>
                                     <label for="tipe_kriteria_{{ $k->id }}">Tipe Kriteria:</label>
                                     <select id="tipe_kriteria_{{ $k->id }}" name="tipe_kriteria[{{ $k->id }}]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                                         <option value="Benefit" {{ $k->tipe_kriteria == 'Benefit' ? 'selected' : '' }}>Benefit</option>
                                         <option value="Cost" {{ $k->tipe_kriteria == 'Cost' ? 'selected' : '' }}>Cost</option>
                                     </select>
-                                </div>
+                                </div> --}}
+
                             </div>
                         @endforeach
 

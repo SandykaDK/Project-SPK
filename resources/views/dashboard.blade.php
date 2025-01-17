@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="text-3xl font-bold mb-5 text-center">
-                        APLIKASI SELEKSI MAHASISWA PENERIMA BEASISWA<br>BEBAS BOP PERIODE 2025
+                        APLIKASI SELEKSI MAHASISWA PENERIMA BEASISWA<br>BEBAS BOP 100%
                     </div>
                     <!-- Cards for displaying student counts -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
