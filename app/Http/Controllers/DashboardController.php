@@ -159,8 +159,9 @@ class DashboardController extends Controller
     public function editAlternatif($id)
     {
         $alternatif = Alternatif::findOrFail($id);
+        $kriteria = Kriteria::with('detailKriteria')->get();
 
-        return view('editalternatif', compact('alternatif'));
+        return view('editalternatif', compact('alternatif', 'kriteria'));
     }
 
     public function updateAlternatif(Request $request, $id)

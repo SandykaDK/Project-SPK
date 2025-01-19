@@ -10,7 +10,7 @@ class Kriteria extends Model
     use HasFactory;
 
     protected $table = 'kriteria';
-    protected $primaryKey = 'id'; // Pastikan ini sesuai dengan kolom primary key di tabel
+    protected $primaryKey = 'id_kriteria'; // Ensure this matches the primary key column in the table
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = false;
@@ -29,6 +29,6 @@ class Kriteria extends Model
 
     public function detailKriteria()
     {
-        return $this->hasMany(DetailKriteria::class, 'id_kriteria', 'id');
+        return $this->hasMany(DetailKriteria::class, 'id_kriteria', 'id_kriteria');
     }
 }
