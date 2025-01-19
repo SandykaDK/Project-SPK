@@ -50,6 +50,12 @@ Route::get('/editkriteria', [DashboardController::class, 'editKriteria'])
 Route::put('/updatekriteria', [DashboardController::class, 'updateKriteria'])
     ->name('updatekriteria');
 
+Route::get('/tambahkriteria', [DashboardController::class, 'tambahKriteria'])
+    ->name('tambahkriteria');
+
+Route::post('/simpankriteria', [DashboardController::class, 'simpanKriteria'])
+    ->name('simpankriteria');
+
 Route::get('/perhitungan', [DashboardController::class, 'tampilPerhitungan'])
     ->name('perhitungan');
 

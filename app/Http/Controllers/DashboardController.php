@@ -217,4 +217,26 @@ class DashboardController extends Controller
 
         return redirect()->route('kriteria')->with('success', 'Data kriteria berhasil diubah.');
     }
+
+    public function tambahKriteria()
+    {
+        return view('tambahkriteria');
+    }
+
+    public function simpanKriteria(Request $request)
+    {
+        $request->validate([
+            'nama_kriteria' => 'required|string|max:255',
+            'bobot_kriteria' => 'required|numeric',
+            'tipe_kriteria' => 'required|string|in:Benefit,Cost',
+        ]);
+
+        Kriteria::create([
+            'nama_kriteria' => $request->nama_kriteria,
+            'bobot_kriteria' => $request->bobot_kriteria,
+            'tipe_kriteria' => $request->tipe_kriteria,
+        ]);
+
+        return redirect()->route('kriteria')->with('success', 'Kriteria berhasil ditambahkan.');
+    }
 }
