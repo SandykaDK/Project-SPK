@@ -26,4 +26,9 @@ class Kriteria extends Model
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
+
+    public function detailKriteria()
+    {
+        return $this->hasMany(DetailKriteria::class, 'id_kriteria', 'id');
+    }
 }
