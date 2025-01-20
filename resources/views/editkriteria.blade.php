@@ -9,56 +9,75 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    @if ($errors->any())
-                        <div class="mb-4">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li class="text-red-600">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    <form id="KriteriaForm" action="{{ route('updatekriteria') }}" method="POST" class="space-y-4">
+                    <form action="{{ route('updatekriteria', ['id' => $kriteria->id_kriteria]) }}" method="POST" class="space-y-4">
                         @csrf
                         @method('PUT')
+                        <div class="font-bold text-2xl mb-4">
+                            Kriteria
+                        </div>
+                        <div>
+                            <label for="nama_kriteria" class>Nama Kriteria:</label>
+                            <input type="text" id="nama_kriteria" name="nama_kriteria" value="{{ $kriteria->nama_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                        </div>
 
-                        @foreach($kriteria as $k)
-                            <div class="mb-4">
-                                <h3 class="text-2xl">Kriteria {{ $k->id }}</h3>
+                        <div>
+                            <label for="bobot_kriteria">Bobot Kriteria:</label>
+                            <input type="number" id="bobot_kriteria" name="bobot_kriteria" value="{{ $kriteria->bobot_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" step="0.01" required>
+                            @if ($errors->has('bobot_kriteria'))
+                                <span class="text-red-500">{{ $errors->first('bobot_kriteria') }}</span>
+                            @endif
+                        </div>
 
-                                <div>
-                                    <label for="nama_kriteria_{{ $k->id }}">Nama Kriteria:</label>
-                                    <input type="text" id="nama_kriteria_{{ $k->id }}" name="nama_kriteria[{{ $k->id }}]" value="{{ $k->nama_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
-                                </div>
+                        <div>
+                            <label for="tipe_kriteria">Tipe Kriteria:</label>
+                            <select id="tipe_kriteria" name="tipe_kriteria" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                                <option value="Benefit" {{ $kriteria->tipe_kriteria == 'Benefit' ? 'selected' : '' }}>Benefit</option>
+                                <option value="Cost" {{ $kriteria->tipe_kriteria == 'Cost' ? 'selected' : '' }}>Cost</option>
+                            </select>
+                        </div>
 
-                                <div>
-                                    <label for="bobot_kriteria_{{ $k->id }}">Bobot Kriteria:</label>
-                                    <input type="number" id="bobot_kriteria_{{ $k->id }}" name="bobot_kriteria[{{ $k->id }}]" value="{{ $k->bobot_kriteria }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg mb-5" step="0.01" required>
-                                </div>
+                        <br><hr><br>
 
-                                {{-- <div>
-                                    <label for="tipe_kriteria_{{ $k->id }}">Tipe Kriteria:</label>
-                                    <select id="tipe_kriteria_{{ $k->id }}" name="tipe_kriteria[{{ $k->id }}]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
-                                        <option value="Benefit" {{ $k->tipe_kriteria == 'Benefit' ? 'selected' : '' }}>Benefit</option>
-                                        <option value="Cost" {{ $k->tipe_kriteria == 'Cost' ? 'selected' : '' }}>Cost</option>
-                                    </select>
-                                </div> --}}
-
+                        <div>
+                            <label for="detail_kriteria" class="text-2xl font-bold">Detail Kriteria:</label>
+                            <div id="detail_kriteria_container" class="mt-4">
+                                @foreach ($kriteria->detailKriteria as $index => $detail)
+                                    <div class="flex space-x-2 mb-5">
+                                        <input type="text" name="detail_kriteria[{{ $index }}][definisi]" value="{{ $detail->definisi }}" placeholder="Definisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                                        <input type="number" name="detail_kriteria[{{ $index }}][nilai]" value="{{ $detail->nilai }}" placeholder="Nilai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
+                            <button type="button" id="add_detail_kriteria" class="bg-green-500 hover:bg-green-700 text-white text-xl font-bold py-1 px-3 rounded">+</button>
+                        </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-3 rounded ">
-                                Update
-                            </button>
-
-                            <a href="{{ route('kriteria') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                Cancel
-                            </a>
+                            <x-primary-button class="ml-3">
+                                {{ __('Update') }}
+                            </x-primary-button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        let detailIndex = {{ count($kriteria->detailKriteria) }};
+        document.getElementById('add_detail_kriteria').addEventListener('click', function() {
+            var container = document.getElementById('detail_kriteria_container');
+            if (detailIndex < 4) {
+                var div = document.createElement('div');
+                div.className = 'flex space-x-2 mb-5';
+                div.innerHTML = `
+                    <input type="text" name="detail_kriteria[${detailIndex}][definisi]" placeholder="Definisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                    <input type="number" name="detail_kriteria[${detailIndex}][nilai]" placeholder="Nilai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
+                `;
+                container.appendChild(div);
+                detailIndex++;
+            } else {
+                alert('Maksimal 4 detail kriteria.');
+            }
+        });
+    </script>
 </x-app-layout>

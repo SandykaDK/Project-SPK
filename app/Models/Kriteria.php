@@ -10,7 +10,7 @@ class Kriteria extends Model
     use HasFactory;
 
     protected $table = 'kriteria';
-    protected $primaryKey = 'id_kriteria'; // Ensure this matches the primary key column in the table
+    protected $primaryKey = 'id_kriteria';
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = false;

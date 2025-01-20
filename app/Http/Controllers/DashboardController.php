@@ -70,7 +70,30 @@ class DashboardController extends Controller
     public function detailPerhitungan($id)
     {
         $mahasiswa = Mahasiswa::with('jurusan', 'ipk', 'prestasi', 'alternatif')->findOrFail($id);
-        return view('detailperhitungan', compact('mahasiswa'));
+
+        $kriteriaK1 = Kriteria::where('id_kriteria', 'k1')->first();
+        $kriteriaK2 = Kriteria::where('id_kriteria', 'k2')->first();
+        $kriteriaK3 = Kriteria::where('id_kriteria', 'k3')->first();
+        $kriteriaK4 = Kriteria::where('id_kriteria', 'k4')->first();
+        $kriteriaK5 = Kriteria::where('id_kriteria', 'k5')->first();
+
+        $maxMinValues = [
+            'k1' => $kriteriaK1 ? ($kriteriaK1->tipe_kriteria == 'Benefit' ? Alternatif::max('k1') : Alternatif::min('k1')) : 'N/A',
+            'k2' => $kriteriaK2 ? ($kriteriaK2->tipe_kriteria == 'Benefit' ? Alternatif::max('k2') : Alternatif::min('k2')) : 'N/A',
+            'k3' => $kriteriaK3 ? ($kriteriaK3->tipe_kriteria == 'Benefit' ? Alternatif::max('k3') : Alternatif::min('k3')) : 'N/A',
+            'k4' => $kriteriaK4 ? ($kriteriaK4->tipe_kriteria == 'Benefit' ? Alternatif::max('k4') : Alternatif::min('k4')) : 'N/A',
+            'k5' => $kriteriaK5 ? ($kriteriaK5->tipe_kriteria == 'Benefit' ? Alternatif::max('k5') : Alternatif::min('k5')) : 'N/A',
+        ];
+
+        $normalizedValues = [
+            'k1' => $maxMinValues['k1'] != 'N/A' ? $mahasiswa->alternatif->k1 / $maxMinValues['k1'] : 'N/A',
+            'k2' => $maxMinValues['k2'] != 'N/A' ? $mahasiswa->alternatif->k2 / $maxMinValues['k2'] : 'N/A',
+            'k3' => $maxMinValues['k3'] != 'N/A' ? $mahasiswa->alternatif->k3 / $maxMinValues['k3'] : 'N/A',
+            'k4' => $maxMinValues['k4'] != 'N/A' ? $mahasiswa->alternatif->k4 / $maxMinValues['k4'] : 'N/A',
+            'k5' => $maxMinValues['k5'] != 'N/A' ? $mahasiswa->alternatif->k5 / $maxMinValues['k5'] : 'N/A',
+        ];
+
+        return view('detailperhitungan', compact('mahasiswa', 'maxMinValues', 'normalizedValues'));
     }
 
     public function tambahMahasiswa()
@@ -186,32 +209,41 @@ class DashboardController extends Controller
         return redirect()->route('dashboard')->with('success', 'Data alternatif berhasil diubah.');
     }
 
-    public function editKriteria()
+    public function editKriteria($id_kriteria)
     {
-        $kriteria = Kriteria::all();
+        $kriteria = Kriteria::findOrFail($id_kriteria);
         return view('editkriteria', compact('kriteria'));
     }
 
-    public function updateKriteria(Request $request)
+    public function updateKriteria(Request $request, $id_kriteria)
     {
         $request->validate([
-            'nama_kriteria.*' => 'required|string|max:255',
-            'bobot_kriteria.*' => 'required|numeric',
-            'tipe_kriteria.*' => 'required|string|in:Benefit,Cost',
+            'nama_kriteria' => 'required|string|max:255',
+            'bobot_kriteria' => 'required|numeric',
+            'tipe_kriteria' => 'required|string|in:Benefit,Cost',
+            'detail_kriteria' => 'required|array|max:4',
+            'detail_kriteria.*.definisi' => 'required|string|max:255',
+            'detail_kriteria.*.nilai' => 'required|numeric',
         ]);
 
-        $totalBobot = array_sum($request->bobot_kriteria);
+        $kriteria = Kriteria::findOrFail($id_kriteria);
+        $totalBobot = Kriteria::where('id_kriteria', '!=', $id_kriteria)->sum('bobot_kriteria') + $request->bobot_kriteria;
 
-        if ($totalBobot != 1) {
-            return redirect()->back()->withErrors(['bobot_kriteria' => 'Total bobot kriteria harus sama dengan 1.']);
+        if ($totalBobot > 1) {
+            return redirect()->back()->withErrors(['bobot_kriteria' => 'Total bobot kriteria tidak boleh lebih dari 1.']);
         }
 
-        foreach ($request->nama_kriteria as $id => $nama_kriteria) {
-            $kriteria = Kriteria::findOrFail($id);
-            $kriteria->update([
-                'nama_kriteria' => $nama_kriteria,
-                'bobot_kriteria' => $request->bobot_kriteria[$id],
-                'tipe_kriteria' => $request->tipe_kriteria[$id],
+        $kriteria->update([
+            'nama_kriteria' => $request->nama_kriteria,
+            'bobot_kriteria' => $request->bobot_kriteria,
+            'tipe_kriteria' => $request->tipe_kriteria,
+        ]);
+
+        $kriteria->detailKriteria()->delete();
+        foreach ($request->detail_kriteria as $detail) {
+            $kriteria->detailKriteria()->create([
+                'definisi' => $detail['definisi'],
+                'nilai' => $detail['nilai'],
             ]);
         }
 
@@ -226,17 +258,43 @@ class DashboardController extends Controller
     public function simpanKriteria(Request $request)
     {
         $request->validate([
+            'id_kriteria' => 'required|string|max:255|unique:kriteria,id_kriteria',
             'nama_kriteria' => 'required|string|max:255',
             'bobot_kriteria' => 'required|numeric',
             'tipe_kriteria' => 'required|string|in:Benefit,Cost',
+            'detail_kriteria' => 'required|array|max:4',
+            'detail_kriteria.*.definisi' => 'required|string|max:255',
+            'detail_kriteria.*.nilai' => 'required|numeric',
         ]);
 
-        Kriteria::create([
+        $totalBobot = Kriteria::sum('bobot_kriteria') + $request->bobot_kriteria;
+
+        if ($totalBobot > 1) {
+            return redirect()->back()->withErrors(['bobot_kriteria' => 'Total bobot kriteria tidak boleh lebih dari 1.']);
+        }
+
+        $kriteria = Kriteria::create([
+            'id_kriteria' => $request->id_kriteria,
             'nama_kriteria' => $request->nama_kriteria,
             'bobot_kriteria' => $request->bobot_kriteria,
             'tipe_kriteria' => $request->tipe_kriteria,
         ]);
 
+        foreach ($request->detail_kriteria as $detail) {
+            $kriteria->detailKriteria()->create([
+                'definisi' => $detail['definisi'],
+                'nilai' => $detail['nilai'],
+            ]);
+        }
+
         return redirect()->route('kriteria')->with('success', 'Kriteria berhasil ditambahkan.');
+    }
+
+    public function hapusKriteria($id_kriteria)
+    {
+        $kriteria = Kriteria::findOrFail($id_kriteria);
+        $kriteria->delete();
+
+        return redirect()->route('kriteria')->with('success', 'Data kriteria berhasil dihapus.');
     }
 }

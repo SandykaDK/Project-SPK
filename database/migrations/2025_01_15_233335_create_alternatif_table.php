@@ -1,19 +1,16 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('alternatif', function (Blueprint $table) {
             $table->id()->primary();
-            $table->string('id_alternatif')->unique();
             $table->integer('k1');
             $table->integer('k2');
             $table->integer('k3');
@@ -22,11 +19,19 @@ return new class extends Migration
             $table->string('nim');
             $table->timestamps();
         });
+
+        DB::table('alternatif')->insert([
+            ['k1' => 3, 'k2' => 1, 'k3' => 1, 'k4' => 1, 'k5' => 4, 'nim' => '22410100059'],
+            ['k1' => 1, 'k2' => 1, 'k3' => 1, 'k4' => 1, 'k5' => 4, 'nim' => '22410100003'],
+            ['k1' => 1, 'k2' => 2, 'k3' => 1, 'k4' => 3, 'k5' => 4, 'nim' => '22410100011'],
+            ['k1' => 4, 'k2' => 1, 'k3' => 4, 'k4' => 1, 'k5' => 4, 'nim' => '22410100048'],
+            ['k1' => 1, 'k2' => 2, 'k3' => 1, 'k4' => 1, 'k5' => 2, 'nim' => '22410100055'],
+            ['k1' => 2, 'k2' => 1, 'k3' => 1, 'k4' => 4, 'k5' => 4, 'nim' => '22410100070'],
+            ['k1' => 3, 'k2' => 1, 'k3' => 1, 'k4' => 1, 'k5' => 4, 'nim' => '22410100041'],
+        ]);
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('alternatif');

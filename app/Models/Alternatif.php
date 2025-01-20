@@ -16,7 +16,6 @@ class Alternatif extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_alternatif',
         'k1',
         'k2',
         'k3',

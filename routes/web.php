@@ -44,10 +44,10 @@ Route::get('/jurusand3si', [DashboardController::class, 'tampilJurusanD3SI'])
 Route::get('/kriteria', [DashboardController::class, 'tampilKriteria'])
     ->name('kriteria');
 
-Route::get('/editkriteria', [DashboardController::class, 'editKriteria'])
+Route::get('/editkriteria/{id}', [DashboardController::class, 'editKriteria'])
     ->name('editkriteria');
 
-Route::put('/updatekriteria', [DashboardController::class, 'updateKriteria'])
+Route::put('/updatekriteria/{id}', [DashboardController::class, 'updateKriteria'])
     ->name('updatekriteria');
 
 Route::get('/tambahkriteria', [DashboardController::class, 'tambahKriteria'])
@@ -55,6 +55,9 @@ Route::get('/tambahkriteria', [DashboardController::class, 'tambahKriteria'])
 
 Route::post('/simpankriteria', [DashboardController::class, 'simpanKriteria'])
     ->name('simpankriteria');
+
+Route::delete('/hapuskriteria/{id}', [DashboardController::class, 'hapusKriteria'])
+    ->name('hapuskriteria');
 
 Route::get('/perhitungan', [DashboardController::class, 'tampilPerhitungan'])
     ->name('perhitungan');

@@ -29,7 +29,14 @@
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $k->nama_kriteria }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $k->bobot_kriteria }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $k->tipe_kriteria }}</td>
-                                            <td></td>
+                                            <td class="py-2 px-4 border-b border-gray-300">
+                                                <a href="{{ route('editkriteria', ['id' => $k->id_kriteria]) }}" class="btn-edit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                                <form action="{{ route('hapuskriteria', ['id' => $k->id_kriteria]) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-delete bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-4 rounded" onclick="return confirm('Apakah Anda yakin ingin menghapus kriteria ini?')">Delete</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

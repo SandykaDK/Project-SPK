@@ -13,17 +13,17 @@ class CreateKriteriaTable extends Migration
             $table->id();
             $table->string('id_kriteria')->unique();
             $table->string('nama_kriteria');
-            $table->string('bobot_kriteria');
+            $table->double('bobot_kriteria');
             $table->string('tipe_kriteria');
             $table->timestamps();
         });
 
         DB::table('kriteria')->insert([
-            ['id_kriteria' => 'k1', 'nama_kriteria' => 'Jumlah Pendapatan Ortu', 'bobot_kriteria' => '0.3', 'tipe_kriteria' => 'benefit'],
-            ['id_kriteria' => 'k2', 'nama_kriteria' => 'Jumlah Tanggungan Ortu', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'benefit'],
-            ['id_kriteria' => 'k3', 'nama_kriteria' => 'Status Ortu', 'bobot_kriteria' => '0.1', 'tipe_kriteria' => 'benefit'],
-            ['id_kriteria' => 'k4', 'nama_kriteria' => 'Jumlah Prestasi', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'benefit'],
-            ['id_kriteria' => 'k5', 'nama_kriteria' => 'IPK', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'benefit'],
+            ['id_kriteria' => 'k1', 'nama_kriteria' => 'Jumlah Pendapatan Ortu', 'bobot_kriteria' => '0.3', 'tipe_kriteria' => 'Benefit'],
+            ['id_kriteria' => 'k2', 'nama_kriteria' => 'Jumlah Tanggungan Ortu', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'Benefit'],
+            ['id_kriteria' => 'k3', 'nama_kriteria' => 'Status Ortu', 'bobot_kriteria' => '0.1', 'tipe_kriteria' => 'Benefit'],
+            ['id_kriteria' => 'k4', 'nama_kriteria' => 'Jumlah Prestasi', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'Benefit'],
+            ['id_kriteria' => 'k5', 'nama_kriteria' => 'IPK', 'bobot_kriteria' => '0.2', 'tipe_kriteria' => 'Benefit'],
         ]);
     }
 

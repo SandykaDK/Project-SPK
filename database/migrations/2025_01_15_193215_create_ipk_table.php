@@ -19,13 +19,13 @@ return new class extends Migration
         });
 
         DB::table('ipk')->insert([
-            ['id_ipk' => 'I1', 'nim' => '0110119001', 'nilai_ipk' => 3.5],
-            ['id_ipk' => 'I2', 'nim' => '0110119002', 'nilai_ipk' => 3.6],
-            ['id_ipk' => 'I3', 'nim' => '0110119003', 'nilai_ipk' => 3.7],
-            ['id_ipk' => 'I4', 'nim' => '0110119004', 'nilai_ipk' => 3.8],
-            ['id_ipk' => 'I5', 'nim' => '0110119005', 'nilai_ipk' => 3.9],
-            ['id_ipk' => 'I6', 'nim' => '0110119006', 'nilai_ipk' => 3.4],
-            ['id_ipk' => 'I7', 'nim' => '0110119007', 'nilai_ipk' => 3.3],
+            ['id_ipk' => 'I1', 'nim' => '22410100059', 'nilai_ipk' => 3.81],
+            ['id_ipk' => 'I2', 'nim' => '22410100003', 'nilai_ipk' => 3.89],
+            ['id_ipk' => 'I3', 'nim' => '22410100011', 'nilai_ipk' => 3.81],
+            ['id_ipk' => 'I4', 'nim' => '22410100048', 'nilai_ipk' => 3.84],
+            ['id_ipk' => 'I5', 'nim' => '22410100055', 'nilai_ipk' => 3.24],
+            ['id_ipk' => 'I6', 'nim' => '22410100070', 'nilai_ipk' => 3.96],
+            ['id_ipk' => 'I7', 'nim' => '22410100041', 'nilai_ipk' => 3.70],
         ]);
     }
 

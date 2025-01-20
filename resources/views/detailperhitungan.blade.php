@@ -57,11 +57,37 @@
                                 </thead>
                                 <tbody>
                                     <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k1 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k2 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k3 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k4 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k5 }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k1'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k2'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k3'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k4'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k5'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-lg font-bold text-gray-700 mb-1">
+                            Normalisasi Nilai Alternatif
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-300 mt-3">
+                                <thead class="bg-gray-200">
+                                    <tr>
+                                        <th class="py-2 px-4 border-b border-gray-300">Jumlah Pendapatan Ortu (C1)</th>
+                                        <th class="py-2 px-4 border-b border-gray-300">Jumlah Tanggungan Ortu (C2)</th>
+                                        <th class="py-2 px-4 border-b border-gray-300">Status Ortu (C3)</th>
+                                        <th class="py-2 px-4 border-b border-gray-300">Jumlah Prestasi (C4)</th>
+                                        <th class="py-2 px-4 border-b border-gray-300">IPK (C5)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-100 text-center">
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k1'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k2'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k3'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k4'] }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k5'] }}</td>
                                     </tr>
                                 </tbody>
                             </table>

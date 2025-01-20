@@ -10,12 +10,11 @@ class Prestasi extends Model
     use HasFactory;
 
     protected $table = 'prestasi';
-    protected $primaryKey = 'id_prestasi';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        'id_prestasi',
         'nim',
         'nama_prestasi',
         'tingkat_prestasi',
