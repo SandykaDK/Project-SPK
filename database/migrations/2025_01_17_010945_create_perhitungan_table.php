@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('preferensi3');
             $table->double('preferensi4');
             $table->double('preferensi5');
+            $table->double('hasil');
             $table->timestamps();
         });
     }

@@ -32,14 +32,8 @@ Route::put('/updatemahasiswa/{id}', [DashboardController::class, 'updateMahasisw
 Route::delete('hapusmahasiswa/{id}', [DashboardController::class, 'hapusMahasiswa'])
     ->name('hapusmahasiswa');
 
-Route::get('/jurusans1tk', [DashboardController::class, 'tampilJurusanS1TK'])
-    ->name('jurusans1tk');
-
-Route::get('/jurusans1si', [DashboardController::class, 'tampilJurusanS1SI'])
-    ->name('jurusans1si');
-
-Route::get('/jurusand3si', [DashboardController::class, 'tampilJurusanD3SI'])
-    ->name('jurusand3si');
+Route::get('/jurusan/{kode_jurusan}', [DashboardController::class, 'tampilJurusan'])
+    ->name('jurusan');
 
 Route::get('/kriteria', [DashboardController::class, 'tampilKriteria'])
     ->name('kriteria');
@@ -64,6 +58,9 @@ Route::get('/perhitungan', [DashboardController::class, 'tampilPerhitungan'])
 
 Route::get('/detailperhitungan/{id}', [DashboardController::class, 'detailPerhitungan'])
     ->name('detailperhitungan');
+
+Route::get('/detail-perhitungan/{nim}', [DashboardController::class, 'showDetailPerhitungan'])
+    ->name('detail-perhitungan');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

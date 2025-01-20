@@ -49,13 +49,23 @@ class Mahasiswa extends Model
         return $this->belongsTo(Periode::class, 'id_periode', 'id_periode');
     }
 
+    public function perhitungan()
+    {
+        return $this->hasOne(Perhitungan::class, 'nim', 'nim');
+    }
+
     public function alternatif()
     {
         return $this->hasOne(Alternatif::class, 'nim', 'nim');
     }
 
-    public function perhitungan()
+    public function getHasilAttribute()
     {
-        return $this->hasMany(Perhitungan::class, 'nim', 'nim');
+        return $this->perhitungan ? $this->perhitungan->hasil : null;
+    }
+
+    public function getRankingAttribute()
+    {
+        return $this->perhitungan ? $this->perhitungan->ranking : null;
     }
 }

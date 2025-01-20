@@ -18,13 +18,13 @@
                     <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                         {{ __('Profile') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('jurusans1si')" :active="request()->routeIs('jurusans1si')">
+                    <x-nav-link :href="route('jurusan', ['kode_jurusan' => 'S1SI'])" :active="request()->is('jurusan/S1SI')">
                         {{ __('S1 Sistem Informasi') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('jurusans1tk')" :active="request()->routeIs('jurusans1tk')">
+                    <x-nav-link :href="route('jurusan', ['kode_jurusan' => 'S1TK'])" :active="request()->is('jurusan/S1TK')">
                         {{ __('S1 Teknik Komputer') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
+                    <x-nav-link :href="route('jurusan', ['kode_jurusan' => 'D3SI'])" :active="request()->is('jurusan/D3SI')">
                         {{ __('D3 Sistem Informasi') }}
                     </x-nav-link>
                     <x-nav-link :href="route('kriteria')" :active="request()->routeIs('kriteria')">
@@ -67,13 +67,13 @@
             <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                 {{ __('Profile') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('jurusans1si')" :active="request()->routeIs('jurusans1si')">
+            <x-responsive-nav-link :href="route('jurusan', ['kode_jurusan' => 'S1SI'])" :active="request()->is('jurusan/S1SI')">
                 {{ __('S1 Sistem Informasi') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('jurusans1tk')" :active="request()->routeIs('jurusans1tk')">
+            <x-responsive-nav-link :href="route('jurusan', ['kode_jurusan' => 'S1TK'])" :active="request()->is('jurusan/S1TK')">
                 {{ __('S1 Teknik Komputer') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('jurusand3si')" :active="request()->routeIs('jurusand3si')">
+            <x-responsive-nav-link :href="route('jurusan', ['kode_jurusan' => 'D3SI'])" :active="request()->is('jurusan/D3SI')">
                 {{ __('D3 Sistem Informasi') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('perhitungan')" :active="request()->routeIs('perhitungan')">

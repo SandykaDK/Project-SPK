@@ -11,17 +11,15 @@ class Alternatif extends Model
 
     protected $table = 'alternatif';
     protected $primaryKey = 'id';
-    protected $keyType = 'string';
-    public $incrementing = false;
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
+        'nim',
         'k1',
         'k2',
         'k3',
         'k4',
         'k5',
-        'nim',
     ];
 
     public function mahasiswa()

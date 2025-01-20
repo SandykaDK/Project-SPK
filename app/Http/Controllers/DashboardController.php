@@ -9,13 +9,14 @@ use App\Models\Kriteria;
 use App\Models\Prestasi;
 use App\Models\Mahasiswa;
 use App\Models\Alternatif;
+use App\Models\Perhitungan;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function tampilDashboard()
     {
-        $mahasiswa = Mahasiswa::all();
+        $mahasiswa = Mahasiswa::with(['perhitungan', 'jurusan', 'alternatif'])->get();
         $kriteria = Kriteria::all();
         $jurusan = Jurusan::all();
         $prestasi = Prestasi::all();
@@ -25,34 +26,83 @@ class DashboardController extends Controller
         $countByJurusan = $mahasiswa->groupBy('kode_jurusan')->map->count();
         $jurusanNames = $jurusan->pluck('nama_jurusan', 'kode_jurusan');
 
-        return view('dashboard', compact('mahasiswa', 'kriteria', 'jurusan', 'prestasi', 'ipk', 'totalMahasiswa', 'countByJurusan', 'jurusanNames'));
+        $kriteriaList = Kriteria::all();
+        $bobot_kriteria = $kriteriaList->pluck('bobot_kriteria', 'id_kriteria');
+
+        foreach ($mahasiswa as $m) {
+            $maxMinValues = [
+                'k1' => $kriteriaList->where('id_kriteria', 'k1')->first() ? ($kriteriaList->where('id_kriteria', 'k1')->first()->tipe_kriteria == 'Benefit' ? Alternatif::max('k1') : Alternatif::min('k1')) : 'N/A',
+                'k2' => $kriteriaList->where('id_kriteria', 'k2')->first() ? ($kriteriaList->where('id_kriteria', 'k2')->first()->tipe_kriteria == 'Benefit' ? Alternatif::max('k2') : Alternatif::min('k2')) : 'N/A',
+                'k3' => $kriteriaList->where('id_kriteria', 'k3')->first() ? ($kriteriaList->where('id_kriteria', 'k3')->first()->tipe_kriteria == 'Benefit' ? Alternatif::max('k3') : Alternatif::min('k3')) : 'N/A',
+                'k4' => $kriteriaList->where('id_kriteria', 'k4')->first() ? ($kriteriaList->where('id_kriteria', 'k4')->first()->tipe_kriteria == 'Benefit' ? Alternatif::max('k4') : Alternatif::min('k4')) : 'N/A',
+                'k5' => $kriteriaList->where('id_kriteria', 'k5')->first() ? ($kriteriaList->where('id_kriteria', 'k5')->first()->tipe_kriteria == 'Benefit' ? Alternatif::max('k5') : Alternatif::min('k5')) : 'N/A',
+            ];
+
+            $normalizedValues = [
+                'k1' => $maxMinValues['k1'] != 'N/A' ? $m->alternatif->k1 / $maxMinValues['k1'] : 0,
+                'k2' => $maxMinValues['k2'] != 'N/A' ? $m->alternatif->k2 / $maxMinValues['k2'] : 0,
+                'k3' => $maxMinValues['k3'] != 'N/A' ? $m->alternatif->k3 / $maxMinValues['k3'] : 0,
+                'k4' => $maxMinValues['k4'] != 'N/A' ? $m->alternatif->k4 / $maxMinValues['k4'] : 0,
+                'k5' => $maxMinValues['k5'] != 'N/A' ? $m->alternatif->k5 / $maxMinValues['k5'] : 0,
+            ];
+
+            $preferenceValues = [
+                'k1' => $normalizedValues['k1'] * $bobot_kriteria['k1'],
+                'k2' => $normalizedValues['k2'] * $bobot_kriteria['k2'],
+                'k3' => $normalizedValues['k3'] * $bobot_kriteria['k3'],
+                'k4' => $normalizedValues['k4'] * $bobot_kriteria['k4'],
+                'k5' => $normalizedValues['k5'] * $bobot_kriteria['k5'],
+            ];
+
+            $hasil = array_sum($preferenceValues);
+
+            Perhitungan::updateOrCreate(
+                ['nim' => $m->nim],
+                [
+                    'normalisasi1' => $normalizedValues['k1'],
+                    'normalisasi2' => $normalizedValues['k2'],
+                    'normalisasi3' => $normalizedValues['k3'],
+                    'normalisasi4' => $normalizedValues['k4'],
+                    'normalisasi5' => $normalizedValues['k5'],
+                    'preferensi1' => $preferenceValues['k1'],
+                    'preferensi2' => $preferenceValues['k2'],
+                    'preferensi3' => $preferenceValues['k3'],
+                    'preferensi4' => $preferenceValues['k4'],
+                    'preferensi5' => $preferenceValues['k5'],
+                    'hasil' => $hasil,
+                ]
+            );
+
+            $m->hasil = $hasil;
+        }
+
+        $perhitungan = Perhitungan::orderBy('hasil', 'desc')->get();
+        $rankings = $perhitungan->pluck('nim')->flip()->map(fn($index) => $index + 1);
+
+        // Urutkan mahasiswa berdasarkan ranking
+        $mahasiswa = $mahasiswa->sortBy(fn($m) => $rankings[$m->nim] ?? PHP_INT_MAX);
+
+        return view('dashboard', compact('mahasiswa', 'kriteria', 'jurusan', 'prestasi', 'ipk', 'totalMahasiswa', 'countByJurusan', 'jurusanNames', 'rankings'));
     }
 
-    public function tampilJurusanS1SI()
+    public function tampilJurusan($kode_jurusan)
     {
-        $mahasiswa = Mahasiswa::where('kode_jurusan', 'S1SI')
-        ->with('ipk', 'prestasi', 'jurusan', 'periode')
-        ->get();
+        $mahasiswa = Mahasiswa::where('kode_jurusan', $kode_jurusan)->with(['perhitungan', 'jurusan', 'alternatif'])->get();
 
-        return view('jurusans1si', compact('mahasiswa'));
-    }
+        $perhitungan = Perhitungan::whereIn('nim', $mahasiswa->pluck('nim'))->orderBy('hasil', 'desc')->get();
 
-    public function tampilJurusanS1TK()
-    {
-        $mahasiswa = Mahasiswa::where('kode_jurusan', 'S1TK')
-        ->with('ipk', 'prestasi', 'jurusan', 'periode')
-        ->get();
+        $rankings = $perhitungan->pluck('nim')->flip()->map(fn($index) => $index + 1);
 
-        return view('jurusans1tk', compact('mahasiswa'));
-    }
+        foreach ($mahasiswa as $m) {
+            $m->hasil = optional($m->perhitungan)->hasil;
+            $m->ranking = $rankings[$m->nim] ?? 'N/A';
+        }
 
-    public function tampilJurusanD3SI()
-    {
-        $mahasiswa = Mahasiswa::where('kode_jurusan', 'D3SI')
-        ->with('ipk', 'prestasi', 'jurusan', 'periode')
-        ->get();
+        $jurusan = Jurusan::where('kode_jurusan', $kode_jurusan)->first();
 
-        return view('jurusand3si', compact('mahasiswa'));
+        $mahasiswa = $mahasiswa->sortBy(fn($m) => $rankings[$m->nim] ?? PHP_INT_MAX);
+
+        return view('jurusan', compact('mahasiswa', 'jurusan'));
     }
 
     public function tampilKriteria()
@@ -71,29 +121,59 @@ class DashboardController extends Controller
     {
         $mahasiswa = Mahasiswa::with('jurusan', 'ipk', 'prestasi', 'alternatif')->findOrFail($id);
 
-        $kriteriaK1 = Kriteria::where('id_kriteria', 'k1')->first();
-        $kriteriaK2 = Kriteria::where('id_kriteria', 'k2')->first();
-        $kriteriaK3 = Kriteria::where('id_kriteria', 'k3')->first();
-        $kriteriaK4 = Kriteria::where('id_kriteria', 'k4')->first();
-        $kriteriaK5 = Kriteria::where('id_kriteria', 'k5')->first();
+        $kriteria = Kriteria::all();
+        $nama_kriteria = $kriteria->pluck('nama_kriteria');
+        $bobot_kriteria = $kriteria->pluck('bobot_kriteria', 'id_kriteria');
 
         $maxMinValues = [
-            'k1' => $kriteriaK1 ? ($kriteriaK1->tipe_kriteria == 'Benefit' ? Alternatif::max('k1') : Alternatif::min('k1')) : 'N/A',
-            'k2' => $kriteriaK2 ? ($kriteriaK2->tipe_kriteria == 'Benefit' ? Alternatif::max('k2') : Alternatif::min('k2')) : 'N/A',
-            'k3' => $kriteriaK3 ? ($kriteriaK3->tipe_kriteria == 'Benefit' ? Alternatif::max('k3') : Alternatif::min('k3')) : 'N/A',
-            'k4' => $kriteriaK4 ? ($kriteriaK4->tipe_kriteria == 'Benefit' ? Alternatif::max('k4') : Alternatif::min('k4')) : 'N/A',
-            'k5' => $kriteriaK5 ? ($kriteriaK5->tipe_kriteria == 'Benefit' ? Alternatif::max('k5') : Alternatif::min('k5')) : 'N/A',
+            'k1' => Alternatif::max('k1'),
+            'k2' => Alternatif::max('k2'),
+            'k3' => Alternatif::max('k3'),
+            'k4' => Alternatif::max('k4'),
+            'k5' => Alternatif::max('k5'),
         ];
 
         $normalizedValues = [
-            'k1' => $maxMinValues['k1'] != 'N/A' ? $mahasiswa->alternatif->k1 / $maxMinValues['k1'] : 'N/A',
-            'k2' => $maxMinValues['k2'] != 'N/A' ? $mahasiswa->alternatif->k2 / $maxMinValues['k2'] : 'N/A',
-            'k3' => $maxMinValues['k3'] != 'N/A' ? $mahasiswa->alternatif->k3 / $maxMinValues['k3'] : 'N/A',
-            'k4' => $maxMinValues['k4'] != 'N/A' ? $mahasiswa->alternatif->k4 / $maxMinValues['k4'] : 'N/A',
-            'k5' => $maxMinValues['k5'] != 'N/A' ? $mahasiswa->alternatif->k5 / $maxMinValues['k5'] : 'N/A',
+            'k1' => $maxMinValues['k1'] != 0 ? $mahasiswa->alternatif->k1 / $maxMinValues['k1'] : 0,
+            'k2' => $maxMinValues['k2'] != 0 ? $mahasiswa->alternatif->k2 / $maxMinValues['k2'] : 0,
+            'k3' => $maxMinValues['k3'] != 0 ? $mahasiswa->alternatif->k3 / $maxMinValues['k3'] : 0,
+            'k4' => $maxMinValues['k4'] != 0 ? $mahasiswa->alternatif->k4 / $maxMinValues['k4'] : 0,
+            'k5' => $maxMinValues['k5'] != 0 ? $mahasiswa->alternatif->k5 / $maxMinValues['k5'] : 0,
         ];
 
-        return view('detailperhitungan', compact('mahasiswa', 'maxMinValues', 'normalizedValues'));
+        $preferenceValues = [
+            'k1' => $normalizedValues['k1'] * $bobot_kriteria['k1'],
+            'k2' => $normalizedValues['k2'] * $bobot_kriteria['k2'],
+            'k3' => $normalizedValues['k3'] * $bobot_kriteria['k3'],
+            'k4' => $normalizedValues['k4'] * $bobot_kriteria['k4'],
+            'k5' => $normalizedValues['k5'] * $bobot_kriteria['k5'],
+        ];
+
+        $hasil = array_sum($preferenceValues);
+
+        Perhitungan::updateOrCreate(
+            ['nim' => $mahasiswa->nim],
+            [
+                'normalisasi1' => $normalizedValues['k1'],
+                'normalisasi2' => $normalizedValues['k2'],
+                'normalisasi3' => $normalizedValues['k3'],
+                'normalisasi4' => $normalizedValues['k4'],
+                'normalisasi5' => $normalizedValues['k5'],
+                'preferensi1' => $preferenceValues['k1'],
+                'preferensi2' => $preferenceValues['k2'],
+                'preferensi3' => $preferenceValues['k3'],
+                'preferensi4' => $preferenceValues['k4'],
+                'preferensi5' => $preferenceValues['k5'],
+                'hasil' => $hasil,
+            ]
+        );
+
+        $allResults = Perhitungan::orderBy('hasil', 'desc')->get();
+        $ranking = $allResults->search(function ($item) use ($mahasiswa) {
+            return $item->nim == $mahasiswa->nim;
+        }) + 1;
+
+        return view('detailperhitungan', compact('mahasiswa', 'maxMinValues', 'normalizedValues', 'preferenceValues', 'nama_kriteria', 'hasil', 'ranking'));
     }
 
     public function tambahMahasiswa()
@@ -159,24 +239,16 @@ class DashboardController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        switch ($mahasiswa->kode_jurusan) {
-            case 'S1SI':
-                return redirect()->route('jurusans1si')->with('success', 'Data mahasiswa berhasil diubah.');
-            case 'S1TK':
-                return redirect()->route('jurusans1tk')->with('success', 'Data mahasiswa berhasil diubah.');
-            case 'D3SI':
-                return redirect()->route('jurusand3si')->with('success', 'Data mahasiswa berhasil diubah.');
-            default:
-                return redirect()->route('dashboard')->with('success', 'Data mahasiswa berhasil diubah.');
-        }
+        return redirect()->route('jurusan', ['kode_jurusan' => $mahasiswa->kode_jurusan])->with('success', 'Data mahasiswa berhasil diubah.');
     }
 
     public function hapusMahasiswa($id)
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
+        $kode_jurusan = $mahasiswa->kode_jurusan;
         $mahasiswa->delete();
 
-        return redirect()->route('jurusans1si')->with('success', 'Data mahasiswa berhasil dihapus.');
+        return redirect()->route('jurusan', ['kode_jurusan' => $kode_jurusan])->with('success', 'Data mahasiswa berhasil dihapus.');
     }
 
     public function editAlternatif($id)
