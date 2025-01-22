@@ -19,7 +19,6 @@
                                         <th class="py-2 px-4 border-b border-gray-300">Nama</th>
                                         <th class="py-2 px-4 border-b border-gray-300">Prodi</th>
                                         <th class="py-2 px-4 border-b border-gray-300">Hasil</th>
-                                        <th class="py-2 px-4 border-b border-gray-300">Ranking</th>
                                         <th class="py-2 px-4 border-b border-gray-300">Action</th>
                                     </tr>
                                 </thead>
@@ -30,7 +29,6 @@
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->nama }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->jurusan->nama_jurusan ?? 'Tidak ada jurusan' }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->hasil ?? 'N/A' }}</td>
-                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->ranking ?? 'N/A' }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">
                                                 <a href="{{ route('editmahasiswa', ['id' => $m->id]) }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Detail</a>
                                                 <a href="{{ route('editalternatif', ['id' => $m->id]) }}" class="btn-nilai bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Nilai</a>

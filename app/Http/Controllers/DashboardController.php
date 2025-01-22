@@ -90,7 +90,6 @@ class DashboardController extends Controller
         $mahasiswa = Mahasiswa::where('kode_jurusan', $kode_jurusan)->with(['perhitungan', 'jurusan', 'alternatif'])->get();
 
         $perhitungan = Perhitungan::whereIn('nim', $mahasiswa->pluck('nim'))->orderBy('hasil', 'desc')->get();
-
         $rankings = $perhitungan->pluck('nim')->flip()->map(fn($index) => $index + 1);
 
         foreach ($mahasiswa as $m) {
@@ -100,6 +99,7 @@ class DashboardController extends Controller
 
         $jurusan = Jurusan::where('kode_jurusan', $kode_jurusan)->first();
 
+        // Urutkan mahasiswa berdasarkan ranking
         $mahasiswa = $mahasiswa->sortBy(fn($m) => $rankings[$m->nim] ?? PHP_INT_MAX);
 
         return view('jurusan', compact('mahasiswa', 'jurusan'));
@@ -113,7 +113,13 @@ class DashboardController extends Controller
 
     public function tampilPerhitungan()
     {
-        $mahasiswa = Mahasiswa::with('jurusan')->get();
+        $mahasiswa = Mahasiswa::with(['jurusan', 'perhitungan'])->get();
+
+        // Urutkan mahasiswa berdasarkan hasil perhitungan
+        $mahasiswa = $mahasiswa->sortByDesc(function ($m) {
+            return optional($m->perhitungan)->hasil;
+        });
+
         return view('perhitungan', compact('mahasiswa'));
     }
 

@@ -111,31 +111,7 @@
                             </table>
                         </div>
 
-                        <div class="text-lg font-bold text-gray-700 mb-3">
-                            Hasil Akhir
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-gray-300 mt-3">
-                                <thead class="bg-gray-200">
-                                    <tr>
-                                        @foreach ($nama_kriteria as $kriteria)
-                                            <th class="py-2 px-4 border-b border-gray-300">{{ $kriteria }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ isset($preferenceValues['k1']) ? $preferenceValues['k1'] : 'N/A' }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ isset($preferenceValues['k2']) ? $preferenceValues['k2'] : 'N/A' }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ isset($preferenceValues['k3']) ? $preferenceValues['k3'] : 'N/A' }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ isset($preferenceValues['k4']) ? $preferenceValues['k4'] : 'N/A' }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ isset($preferenceValues['k5']) ? $preferenceValues['k5'] : 'N/A' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="text-lg font-bold text-gray-700 mb-3">
+                        <div class="text-lg font-bold text-gray-700 mb-3 mt-7">
                             Hasil Akhir
                         </div>
                         <div class="overflow-x-auto">
