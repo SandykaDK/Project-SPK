@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('perhitungan', function (Blueprint $table) {
             $table->id()->primary();
             $table->string('nim');
+            $table->string('id_periode'); // Tambahkan kolom id_periode
             $table->double('normalisasi1');
             $table->double('normalisasi2');
             $table->double('normalisasi3');
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->double('preferensi5');
             $table->double('hasil');
             $table->timestamps();
+
+            $table->foreign('id_periode')->references('id_periode')->on('periode'); // Tambahkan foreign key constraint
         });
     }
 

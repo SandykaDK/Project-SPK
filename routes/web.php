@@ -62,6 +62,9 @@ Route::get('/detailperhitungan/{id}', [DashboardController::class, 'detailPerhit
 Route::get('/detail-perhitungan/{nim}', [DashboardController::class, 'showDetailPerhitungan'])
     ->name('detail-perhitungan');
 
+Route::get('/recalculate-rankings', [DashboardController::class, 'recalculateRankings'])
+    ->name('recalculateRankings');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -23,4 +23,9 @@ class Periode extends Model
     {
         return $this->hasMany(Mahasiswa::class, 'id_periode', 'id_periode');
     }
+
+    public static function getYears()
+    {
+        return self::select('tahun_periode')->distinct()->orderBy('tahun_periode', 'asc')->get();
+    }
 }

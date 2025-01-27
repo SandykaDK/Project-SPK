@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="mt-2">
-                        <a href="{{ route('tambahkriteria') }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">Tambah</a>
+                        <a href="{{ count($kriteria) < 5 ? route('tambahkriteria') : '#' }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4" onclick="if ({{ count($kriteria) }} >= 5) { alert('Maksimal 5 Kriteria'); return false; }">Tambah</a>
                         <div class="overflow-x-auto">
                             <table class="min-w-full bg-white border border-gray-300 mt-5">
                                 <thead class="bg-gray-200">

@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -11,9 +12,14 @@ return new class extends Migration
         Schema::create('periode', function (Blueprint $table) {
             $table->id();
             $table->string('id_periode')->unique();
-            $table->string('tahun_periode');
+            $table->year('tahun_periode');
             $table->timestamps();
         });
+
+        DB::table('periode')->insert([
+            ['id_periode' => '2k24', 'tahun_periode' => '2024'],
+            ['id_periode' => '2k25', 'tahun_periode' => '2025'],
+        ]);
     }
 
     public function down(): void

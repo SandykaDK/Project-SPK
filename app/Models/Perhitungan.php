@@ -16,6 +16,7 @@ class Perhitungan extends Model
 
     protected $fillable = [
         'nim',
+        'id_periode', // Tambahkan id_periode ke fillable
         'normalisasi1',
         'normalisasi2',
         'normalisasi3',
@@ -32,5 +33,10 @@ class Perhitungan extends Model
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+    }
+
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'id_periode', 'id_periode'); // Tambahkan relasi ke Periode
     }
 }

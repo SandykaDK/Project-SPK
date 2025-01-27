@@ -29,11 +29,9 @@
                                 </thead>
                                 <tbody>
                                     <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k1 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k2 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k3 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k4 }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->k5 }}</td>
+                                        @foreach ($nama_kriteria as $key => $kriteria)
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $mahasiswa->alternatif->{$key} }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -53,11 +51,9 @@
                                 </thead>
                                 <tbody>
                                     <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k1'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k2'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k3'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k4'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues['k5'] }}</td>
+                                        @foreach ($nama_kriteria as $key => $kriteria)
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $maxMinValues[$key] }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -77,11 +73,9 @@
                                 </thead>
                                 <tbody>
                                     <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k1'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k2'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k3'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k4'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues['k5'] }}</td>
+                                        @foreach ($nama_kriteria as $key => $kriteria)
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $normalizedValues[$key] }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
@@ -101,11 +95,9 @@
                                 </thead>
                                 <tbody>
                                     <tr class="hover:bg-gray-100 text-center">
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues['k1'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues['k2'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues['k3'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues['k4'] }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues['k5'] }}</td>
+                                        @foreach ($nama_kriteria as $key => $kriteria)
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $preferenceValues[$key] }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>

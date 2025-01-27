@@ -20,10 +20,17 @@ class Alternatif extends Model
         'k3',
         'k4',
         'k5',
+        'tahun',
+        'id_periode',
     ];
 
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+    }
+
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'id_periode', 'id_periode');
     }
 }
