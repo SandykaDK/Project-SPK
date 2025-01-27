@@ -125,10 +125,12 @@ class DashboardController extends Controller
     {
         $mahasiswa = Mahasiswa::with(['jurusan', 'perhitungan'])->get();
 
+        foreach ($mahasiswa as $m) {
+            $m->hasil = optional($m->perhitungan)->hasil;
+        }
+
         // Urutkan mahasiswa berdasarkan hasil perhitungan
-        $mahasiswa = $mahasiswa->sortByDesc(function ($m) {
-            return optional($m->perhitungan)->hasil;
-        });
+        $mahasiswa = $mahasiswa->sortByDesc('hasil');
 
         return view('perhitungan', compact('mahasiswa'));
     }
@@ -212,13 +214,12 @@ class DashboardController extends Controller
         ]);
 
         $alternatif = Alternatif::create([
-            'id_alternatif' => Random::generate(11),
             'k1' => 0,
             'k2' => 0,
             'k3' => 0,
             'k4' => 0,
             'k5' => 0,
-            'tahun' => date('Y'),
+            'id_periode' => date('2k25'),
             'nim' => $request->nim,
         ]);
 
@@ -382,6 +383,12 @@ class DashboardController extends Controller
     {
         $kriteria = Kriteria::findOrFail($id_kriteria);
         $kriteria->detailKriteria()->delete(); // Delete related detailkriteria
+
+        // Delete corresponding data in the alternatif table
+        Alternatif::query()->update([
+            'k' . substr($id_kriteria, 1) => null
+        ]);
+
         $kriteria->delete();
 
         return redirect()->route('kriteria')->with('success', 'Data kriteria berhasil dihapus.');

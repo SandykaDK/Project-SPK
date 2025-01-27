@@ -27,7 +27,7 @@
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->nim }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->nama }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">{{ $m->jurusan->nama_jurusan ?? 'Tidak ada jurusan' }}</td>
-                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->hasil ?? 'N/A' }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300">{{ $m->perhitungan->hasil ?? 'N/A' }}</td>
                                             <td class="py-2 px-4 border-b border-gray-300">
                                                 <a href="{{ route('detailperhitungan', ['id' => $m->id]) }}" class="btn-edit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 mx-0.5">Detail</a>
                                             </td>

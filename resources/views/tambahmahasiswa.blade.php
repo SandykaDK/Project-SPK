@@ -11,22 +11,22 @@
                 <div class="p-6 text-gray-900">
                     <form action="{{ route('simpanmahasiswa') }}" method="POST">
                         @csrf
-                        <div>
+                        <div class="mb-3">
                             <label for="nim">NIM:</label>
                             <input type="text" id="nim" name="nim" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label for="nama">Nama:</label>
                             <input type="text" id="nama" name="nama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label for="jenis_kelamin">Jenis Kelamin:</label>
                             <select id="jenis_kelamin" name="jenis_kelamin" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                                 <option value="L">Laki-laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label for="kode_jurusan">Jurusan:</label>
                             <select id="kode_jurusan" name="kode_jurusan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                                 <option value="S1SI">S1 Sistem Informasi</option>
@@ -34,7 +34,7 @@
                                 <option value="D3SI">D3 Sistem Informasi</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label for="alamat">Alamat:</label>
                             <input type="text" id="alamat" name="alamat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg" required>
                         </div>

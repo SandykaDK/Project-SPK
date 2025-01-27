@@ -53,7 +53,14 @@
                                 @foreach ($mahasiswa->sortByDesc('hasil') as $index => $m)
                                     <tr class="hover:bg-gray-100 text-center" data-year="{{ $m->alternatif->periode->tahun_periode ?? 'N/A' }}">
                                         <td class="py-2 px-4 border-b border-gray-300">{{ $m->nim }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-300">{{ $m->nama }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">
+                                            {{ $m->nama }}
+                                            @if (collect($m->alternatif->only(['k1', 'k2', 'k3', 'k4', 'k5']))->contains(null))
+                                                <svg class="inline h-5 w-5 text-red-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+                                                </svg>
+                                            @endif
+                                        </td>
                                         <td class="py-2 px-4 border-b border-gray-300">{{ $m->jurusan->nama_jurusan ?? 'Tidak ada jurusan' }}</td>
                                         <td class="py-2 px-4 border-b border-gray-300">{{ $m->hasil ?? 'N/A' }}</td>
                                         <td class="py-2 px-4 border-b border-gray-300">{{ $index + 1 }}</td>
