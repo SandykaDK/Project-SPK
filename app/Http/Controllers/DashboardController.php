@@ -310,7 +310,7 @@ class DashboardController extends Controller
             'nama_kriteria' => 'required|string|max:255',
             'bobot_kriteria' => 'required|numeric',
             'tipe_kriteria' => 'required|string|in:Benefit,Cost',
-            'detail_kriteria' => 'required|array|max:4',
+            'detail_kriteria' => 'required|array|max:5',
             'detail_kriteria.*.definisi' => 'required|string|max:255',
             'detail_kriteria.*.nilai' => 'required|numeric',
         ]);

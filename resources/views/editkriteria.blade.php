@@ -52,10 +52,9 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <x-primary-button class="ml-3 mx-3">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3.5 rounded-lg mx-2">
                                 {{ __('Update') }}
-                            </x-primary-button>
-
+                            </button>
                             <a href="{{ route('kriteria') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1.5 px-3.5 rounded-lg">
                                 Cancel
                             </a>
