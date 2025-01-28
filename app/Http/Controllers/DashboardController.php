@@ -44,8 +44,13 @@ class DashboardController extends Controller
             $normalizedValues = [];
             $preferenceValues = [];
             foreach ($kriteriaList as $k) {
-                $maxMinValues[$k->id_kriteria] = $k->tipe_kriteria == 'Benefit' ? Alternatif::max($k->id_kriteria) : Alternatif::min($k->id_kriteria);
-                $normalizedValues[$k->id_kriteria] = $maxMinValues[$k->id_kriteria] != 'N/A' ? $m->alternatif->{$k->id_kriteria} / $maxMinValues[$k->id_kriteria] : 0;
+                if ($k->tipe_kriteria == 'Benefit') {
+                    $maxMinValues[$k->id_kriteria] = Alternatif::max($k->id_kriteria);
+                    $normalizedValues[$k->id_kriteria] = $maxMinValues[$k->id_kriteria] != 0 ? $m->alternatif->{$k->id_kriteria} / $maxMinValues[$k->id_kriteria] : 0;
+                } else {
+                    $maxMinValues[$k->id_kriteria] = Alternatif::min($k->id_kriteria);
+                    $normalizedValues[$k->id_kriteria] = $m->alternatif->{$k->id_kriteria} != 0 ? $maxMinValues[$k->id_kriteria] / $m->alternatif->{$k->id_kriteria} : 0;
+                }
                 $preferenceValues[$k->id_kriteria] = $normalizedValues[$k->id_kriteria] * $bobot_kriteria[$k->id_kriteria];
             }
 
@@ -148,14 +153,13 @@ class DashboardController extends Controller
         $preferenceValues = [];
 
         foreach ($kriteria as $k) {
-            $maxMinValues[$k->id_kriteria] = $k->tipe_kriteria == 'Benefit'
-                ? Alternatif::max($k->id_kriteria)
-                : Alternatif::min($k->id_kriteria);
-
-            $normalizedValues[$k->id_kriteria] = $maxMinValues[$k->id_kriteria] != 0
-                ? $mahasiswa->alternatif->{$k->id_kriteria} / $maxMinValues[$k->id_kriteria]
-                : 0;
-
+            if ($k->tipe_kriteria == 'Benefit') {
+                $maxMinValues[$k->id_kriteria] = Alternatif::max($k->id_kriteria);
+                $normalizedValues[$k->id_kriteria] = $maxMinValues[$k->id_kriteria] != 0 ? $mahasiswa->alternatif->{$k->id_kriteria} / $maxMinValues[$k->id_kriteria] : 0;
+            } else {
+                $maxMinValues[$k->id_kriteria] = Alternatif::min($k->id_kriteria);
+                $normalizedValues[$k->id_kriteria] = $mahasiswa->alternatif->{$k->id_kriteria} != 0 ? $maxMinValues[$k->id_kriteria] / $mahasiswa->alternatif->{$k->id_kriteria} : 0;
+            }
             $preferenceValues[$k->id_kriteria] = $normalizedValues[$k->id_kriteria] * $bobot_kriteria[$k->id_kriteria];
         }
 

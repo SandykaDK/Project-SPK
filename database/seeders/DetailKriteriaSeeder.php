@@ -10,11 +10,11 @@ class DetailKriteriaSeeder extends Seeder
     public function run(): void
     {
         DB::table('detailkriteria')->insert([
-            ['id_kriteria' => 'k1', 'definisi' => '< Rp2.000.000', 'nilai' => '5'],
-            ['id_kriteria' => 'k1', 'definisi' => 'Rp2.000.000 - Rp5.000.000', 'nilai' => '4'],
+            ['id_kriteria' => 'k1', 'definisi' => '< Rp2.000.000', 'nilai' => '1'],
+            ['id_kriteria' => 'k1', 'definisi' => 'Rp2.000.000 - Rp5.000.000', 'nilai' => '2'],
             ['id_kriteria' => 'k1', 'definisi' => 'Rp5.000.000 - Rp8.000.000', 'nilai' => '3'],
-            ['id_kriteria' => 'k1', 'definisi' => 'Rp8.000.000 - Rp10.000.000', 'nilai' => '2'],
-            ['id_kriteria' => 'k1', 'definisi' => '>Rp10.000.000', 'nilai' => '1'],
+            ['id_kriteria' => 'k1', 'definisi' => 'Rp8.000.000 - Rp10.000.000', 'nilai' => '4'],
+            ['id_kriteria' => 'k1', 'definisi' => '>Rp10.000.000', 'nilai' => '5'],
 
             ['id_kriteria' => 'k2', 'definisi' => '1 Orang', 'nilai' => '1'],
             ['id_kriteria' => 'k2', 'definisi' => '2 Orang', 'nilai' => '2'],
